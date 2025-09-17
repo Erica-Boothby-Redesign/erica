@@ -9,23 +9,24 @@ import Image from "next/image";
 import Mobile_nav from "./mobile_nav";
 import Edit_nav from "./edit_nav";
 import { supabase } from "@/app/utils/supabaseClient";
+import Contact_form from "./contact_form";
 
 const Nav = () => {
   const [show_media, setshow_media] = useState(false);
   const [open_edit, setopen_edit] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data, error }: any = await supabase
-        .from("nav")
-        .select("*")
-        .order("created_at", { ascending: false });
-      setshow_media(data[0].media);
-      return data;
-    };
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     const { data, error }: any = await supabase
+  //       .from("nav")
+  //       .select("*")
+  //       .order("created_at", { ascending: false });
+  //     setshow_media(data[0].media);
+  //     return data;
+  //   };
 
-    fetchProducts();
-  }, [open_edit]);
+  //   fetchProducts();
+  // }, [open_edit]);
   const items = [
     {
       text: "Home",
@@ -43,11 +44,10 @@ const Nav = () => {
       text: "teaching & consultation",
       link: "/consultation",
     },
-    ...(show_media ? [{ text: "MEDIA", link: "/media" }] : []),
-    // {
-    //   text: "MEDIA",
-    //   link: "/media",
-    // },
+    {
+      text: "MEDIA",
+      link: "/media",
+    },
   ];
   const items_right = [
     {
@@ -75,7 +75,7 @@ const Nav = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Your code that uses the window object
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -130,23 +130,25 @@ const Nav = () => {
   }, [width]);
   const [calwidth, setcalwidth] = useState(0);
   const [open_menu, setopen_menu] = useState(false);
-  const [isloggedin, setisloggedin] = useState(false);
+  // const [isloggedin, setisloggedin] = useState(false);
 
-  // CHECK IF LOGGED IN
-  // check if logged in
-  useEffect(() => {
-    // Check initial session
-    const checkInitialSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
-        setisloggedin(true);
-      }
-    };
+  // // CHECK IF LOGGED IN
+  // // check if logged in
+  // useEffect(() => {
+  //   // Check initial session
+  //   const checkInitialSession = async () => {
+  //     const {
+  //       data: { session },
+  //     } = await supabase.auth.getSession();
+  //     if (session) {
+  //       setisloggedin(true);
+  //     }
+  //   };
 
-    checkInitialSession();
-  }, [router]);
+  //   checkInitialSession();
+  // }, [router]);
+
+  const [open_contact_form, setopen_contact_form] = useState(false);
 
   return (
     <>
@@ -161,6 +163,7 @@ const Nav = () => {
                 href={e.link}
                 style={{ whiteSpace: "nowrap" }}
                 key={index}
+                scroll={true} // 👈 forces scroll to top on navigation
                 className={` ${
                   e.link == pathname ? "bg-[black]" : "bg-[white]"
                 } uppercase overflow-hidden  md:p-[0.5vw] group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[1.5vw]  backdrop-blur-2xl bg-opacity-[20%] `}
@@ -220,6 +223,7 @@ const Nav = () => {
                 {e.link && (
                   <Link
                     href={e.link}
+                    scroll={true} // 👈 forces scroll to top on navigation
                     style={{
                       whiteSpace: "nowrap",
                       transition: "0.25s ease",
@@ -229,7 +233,7 @@ const Nav = () => {
                       // opacity: open_menu && calwidth < 768 ? 0 : "",
                     }}
                     key={index}
-                    className={`uppercase overflow-hidden  ${
+                    className={`uppercase  overflow-hidden  ${
                       e.link == pathname ? " bg-[#440C0C] " : " bg-[#440C0C] "
                     }   md:p-[0.4vw] p-[1.3vw] group hover:[#103210] duration-[1s] md:rounded-[1.5vw] rounded-[8vw]  backdrop-blur-2xl bg-opacity-[10%] ${
                       open_menu ? "" : ""
@@ -249,6 +253,7 @@ const Nav = () => {
                 {e.btn && (
                   <button
                     // href={e.link}
+
                     style={{
                       whiteSpace: "nowrap",
                       transition: "0.25s ease",
@@ -258,12 +263,13 @@ const Nav = () => {
                       // opacity: open_menu && calwidth < 768 ? 0 : "",
                     }}
                     onClick={() => {
-                      scroll_to_contact();
+                      // scroll_to_contact();
+                      setopen_contact_form(true);
                     }}
                     key={index}
                     className={`uppercase overflow-hidden  ${
                       e.link == pathname ? " bg-[#440C0C] " : " bg-[#440C0C] "
-                    }   md:p-[0.4vw] p-[1.3vw] group hover:[#103210] duration-[1s] md:rounded-[1.5vw] rounded-[8vw]  backdrop-blur-2xl bg-opacity-[10%] `}
+                    }   md:p-[0.4vw] cursor-pointer p-[1.3vw] group hover:[#103210] duration-[1s] md:rounded-[1.5vw] rounded-[8vw]  backdrop-blur-2xl bg-opacity-[10%] `}
                   >
                     <div
                       className={`  ${
@@ -282,26 +288,19 @@ const Nav = () => {
         </div>
         {/* THIS IS FOR THE LOGGED IN SESSION */}
 
-        {isloggedin && (
+        {/* {isloggedin && (
           <div className="w-full Z-[100]  absolute top-0 left-0 h-full flex justify-end items-start md:px-[0.5vw] md:gap-[1.5vw] px-[5vw]  text-[3.5vw] gap-[5vw] md:text-[1vw] capitalize bg-black bg-opacity-[50%]  md:rounded-[1vw]">
             <button
               className=" md:w-[8vw] md:h-[3vw] h-[10vw] w-[30vw] rounded-[2vw] capitalize bg-white  md:rounded-[0.5vw] hover:bg-opacity-[60%] backdrop-blur-2xl text-center "
               onClick={() => {
-                // edit_each_publication_modal_param(
-                //   title,
-                //   body,
-                //   view_data,
-                //   pdf_data,
-                //   id,
-                //   img,
-                // );
+              
                 setopen_edit(true);
               }}
             >
               edit
             </button>
           </div>
-        )}
+        )} */}
       </nav>
       {open_menu && (
         <Mobile_nav
@@ -311,7 +310,10 @@ const Nav = () => {
           mobile_nav={mobile_nav}
         />
       )}
-      {open_edit && <Edit_nav setopen_edit={setopen_edit} />}
+      {/* {open_edit && <Edit_nav setopen_edit={setopen_edit} />} */}
+      {open_contact_form && (
+        <Contact_form setopen_contact_form={setopen_contact_form} />
+      )}
     </>
   );
 };

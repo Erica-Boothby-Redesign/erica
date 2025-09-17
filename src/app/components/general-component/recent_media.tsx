@@ -103,27 +103,33 @@ const Recent_media = ({ product_data }: any) => {
                 <div className="overflow-hidden  w-full md:h-[19vw] h-[58vw] rounded-[4vw] md:rounded-[1.5vw]">
                   <Image
                     src={internal.img}
-                    unoptimized
-                    width="0"
-                    height="0"
                     alt={internal.caption}
-                    style={{ transition: "0.8s ease" }}
-                    className="w-full  scale-[1.12] group-hover:scale-[1.05] h-fit"
+                    width={500}
+                    height={600}
+                    // fill
+                    className="w-full h-full object-cover group-hover:scale-[1.1]"
                   />
                 </div>
 
-                <div className="">
-                  <p
-                    className={`
-                p-[3vw] py-[5vw] md:p-[1.5vw]
-                ${spline_font.className}
-                font-bold
-                text-[4vw] md:text-[1vw]
-                leading-[5vw] md:leading-[1.4vw]
-              `}
+                <div className="overflow-hidden">
+                  <div
+                    className={` md:p-[1.5vw] p-[3vw] flex flex-col md:gap-[1vw] gap-[3vw]  ${spline_font.className}  font-medium md:text-[1.2vw] text-[4vw] md:leading-[1.4vw] leading-[5vw]`}
                   >
-                    {internal.caption}
-                  </p>
+                    {internal.caption.includes("|") ? (
+                      <>
+                        <p
+                          style={{ fontWeight: "bold" }}
+                          className="text-[#103210] capitalize md:text-[1.3vw] text-[5vw] "
+                        >
+                          {internal.caption.split("|")[1]}
+                        </p>
+
+                        {internal.caption.split("|")[0]}
+                      </>
+                    ) : (
+                      <p className=""> {internal.caption}</p>
+                    )}{" "}
+                  </div>
                 </div>
               </Link>
             ))}
@@ -141,7 +147,7 @@ const Recent_media = ({ product_data }: any) => {
               transition: "0.9s ease",
               // transform: start_anime ? "translate(0,0)" : "translate(0%,80%)",
             }}
-            href={"/"}
+            href={"/media"}
             className={` ${Helvetica_light.className} uppercase overflow-hidden  md:p-[0.5vw] p-[2vw] rounded-[8vw] w-fit group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[2vw] bg-[black] backdrop-blur-2xl bg-opacity-[20%] `}
           >
             <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw] flex justify-center items-center   py-[2.5vw] px-[8vw] md:py-[0.7vw] md:px-[1.5vw]">

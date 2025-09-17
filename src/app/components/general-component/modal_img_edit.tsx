@@ -30,7 +30,7 @@ const Modal_img_edit = ({
     setError("");
 
     let result;
-    console.log("its adding");
+    console.log("its adding", updateData);
     // Add new publication
     // console.log(edit_text, record_Name);
     const { data, error } = await supabase
@@ -45,7 +45,7 @@ const Modal_img_edit = ({
       setError(error.message);
     } else {
       setedit_img("");
-      //   window.location.reload();
+      window.location.reload();
     }
   };
 

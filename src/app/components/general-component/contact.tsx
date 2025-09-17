@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Modal_text_edit from "./modal_text_edit";
 import { supabase } from "@/app/utils/supabaseClient";
 import Edit_text from "./edit_text";
+import Contact_form from "./contact_form";
 
 const Contact = ({ product_data }: any) => {
   const [isloggedin, setisloggedin] = useState(false);
@@ -102,6 +103,11 @@ const Contact = ({ product_data }: any) => {
       supabase.removeChannel(subscription);
     };
   }, []);
+
+  const [email, setemail] = useState("");
+  const [body, setbody] = useState("");
+
+  const [open_contact_form, setopen_contact_form] = useState(false);
   return (
     <>
       {edit_text && (
@@ -150,6 +156,7 @@ const Contact = ({ product_data }: any) => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setopen_contact_form(true);
           }}
           className={` ${Helvetica_light.className} relative md:w-[30vw]     flex flex-col md:gap-[2vw]  w-full gap-[10vw] `}
         >
@@ -165,6 +172,10 @@ const Contact = ({ product_data }: any) => {
             <input
               type="email"
               autoComplete="email"
+              onChange={(e) => {
+                setemail(e.target.value);
+              }}
+              value={email || ""}
               placeholder={active_user_data[0].placeholder_email || ""}
               className=" outline-none border-b-[0.2vw] border-opacity-[40%] border-[#000000] md:pb-[0.7vw] w-full h-[13vw] pb-[1vw] md:h-[4vw] bg-transparent md:pl-[0.5vw] pl-[1.7vw] focus:border-[#103210] focus:border-opacity-[100%] transition duration-[0.6s] md:pr-[5vw] placeholder:text-[#000000] md:text-[1.2vw] text-[4vw]"
             />
@@ -180,6 +191,10 @@ const Contact = ({ product_data }: any) => {
             )}
             <textarea
               // type="text"
+              value={body || ""}
+              onChange={(e) => {
+                setbody(e.target.value);
+              }}
               placeholder={active_user_data[0].placeholder_body || ""}
               className=" outline-none  border-b-[0.2vw] border-opacity-[40%] border-[#000000] md:pb-[0.7vw] w-full h-full bg-transparent md:pl-[0.5vw] pb-[2vw] pl-[1.7vw] focus:border-[#103210] focus:border-opacity-[100%] transition duration-[0.6s] md:pr-[5vw] pr-[17vw] placeholder:text-[#000000] md:text-[1.2vw] text-[4vw] resize-none"
             ></textarea>
@@ -197,6 +212,14 @@ const Contact = ({ product_data }: any) => {
           </div>
         </form>
       </div>
+
+      {open_contact_form && (
+        <Contact_form
+          prop_body={body}
+          prop_email={email}
+          setopen_contact_form={setopen_contact_form}
+        />
+      )}
     </>
   );
 };

@@ -5,7 +5,7 @@ const fetchProducts = async () => {
   const { data, error } = await supabase
     .from("review")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("order", { ascending: true });
   // .limit(3);
 
   // if (error) throw notFound();

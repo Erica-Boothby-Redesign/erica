@@ -63,6 +63,12 @@ const Modal_text_edit = ({
             >
               Type Text here
             </label>
+            {record_Name == "heading" ||
+              (record_Name == "occupation" && (
+                <p className="text-sm text-[red]">
+                  Include {"<br/>"} tag to enter a new line
+                </p>
+              ))}{" "}
             <textarea
               //   type="text"
               id="description"
@@ -72,7 +78,7 @@ const Modal_text_edit = ({
               onChange={(e) => {
                 settext(e.target.value);
               }}
-              className="border  md:rounded-[1vw] rounded-[1.5vw]  outline-none bg-[black] bg-opacity-[70%] placeholder:text-white md:h-[10vw] h-[100vw] capitalize text-white resize-none p-[2%] md:text-[1vw] text-[3.5vw]"
+              className="border  md:rounded-[1vw] rounded-[1.5vw]  outline-none bg-[black] bg-opacity-[70%] placeholder:text-white md:h-[10vw] h-[100vw]  text-white resize-none p-[2%] md:text-[1vw] text-[3.5vw]"
               placeholder="input text  here .."
             />
           </div>

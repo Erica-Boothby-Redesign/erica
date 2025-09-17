@@ -117,7 +117,7 @@ const Individual_research = ({ product_data }: any) => {
         </div>
         <div
           className={` ${Helvetica_light.className} md:container flex flex-col  mx-auto  pt-6 md:p-6 lg:p-12 bg-transparent text-dark-blue dark:text-white 
-            [&_p]:text-[1rem] [&_p_md]:text-xl  [&_p]:leading-relaxed [&_p]:mb-4 
+            [&_p]:text-[1rem]  [&_p]:text-[black] [&_p_md]:text-xl  [&_p]:leading-relaxed [&_p]:mb-4 
             [&_h1]:text-3xl [&_h1]:w-full [&_h1_md]:text-4xl [&_h1_lg]:text-5xl [&_h1]:font-bold [&_h1]:mb-4 
             [&_h2]:text-2xl [&_h2]:w-full [&_h2_md]:text-3xl [&_h2_lg]:text-4xl [&_h2]:font-bold [&_h2]:mb-4 
             [&_h3]:text-xl [&_h3]:w-full [&_h3_md]:text-2xl [&_h3_lg]:text-3xl [&_h3]:font-bold [&_h3]:mb-4 

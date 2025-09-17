@@ -39,3 +39,6 @@ export const Helvetica_light = localFont({
 export const Media_san_regular = localFont({
   src: "../../../public/fonts/media_sans/mediasans-regular-TRIAL-BF63c75479e5ff3.otf",
 });
+export const Agatho_regular = localFont({
+  src: "../../../public/fonts/agatho/Agatho_Regular.otf",
+});

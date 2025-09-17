@@ -13,7 +13,7 @@ const fetchProducts = async () => {
   const { data, error } = await supabase
     .from("consultation")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("order", { ascending: false });
 
   // if (error) throw notFound();
   // console.log(data);
@@ -23,7 +23,7 @@ const fetchpage_data = async () => {
   const { data, error } = await supabase
     .from("consultation_page")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("order", { ascending: true });
   // console.log(data);
   return data;
 };

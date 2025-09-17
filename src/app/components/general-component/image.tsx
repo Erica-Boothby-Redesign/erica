@@ -423,7 +423,7 @@ const Image_list = ({ setopen_img, setimage_link }: any) => {
                         <img
                           src={e.file_url}
                           alt="images"
-                          className="absolute w-full h-fit absolute_center"
+                          className="absolute w-full h-full object-cover absolute_center"
                         />
                       </div>
                     );

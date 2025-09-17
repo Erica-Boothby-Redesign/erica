@@ -14,8 +14,12 @@ import {
 } from "@/app/utils/fonts";
 import { gsap } from "gsap";
 import Link from "next/link";
+import Edit_text from "../general-component/edit_text";
+import { supabase } from "@/app/utils/supabaseClient";
+import { useRouter } from "next/navigation";
+import Modal_text_edit from "../general-component/modal_text_edit";
 
-const AnimatedLines: React.FC = () => {
+const AnimatedLines = ({ active_user_data }: any) => {
   const [value_1, setvalue_1] = useState(100);
   const [value_2, setvalue_2] = useState(100);
   const [value_3, setvalue_3] = useState(100);
@@ -53,8 +57,8 @@ const AnimatedLines: React.FC = () => {
   const second_is_in_view = useInView(second_text_ref);
 
   useEffect(() => {
-    setstart_frist_text(first_is_in_view);
-    setstart_second_text(second_is_in_view);
+    first_is_in_view && setstart_frist_text(first_is_in_view);
+    second_is_in_view && setstart_second_text(second_is_in_view);
   }, [first_is_in_view, second_is_in_view]);
 
   const { scrollYProgress: scrollYProgress1 } = useScroll({
@@ -168,92 +172,163 @@ const AnimatedLines: React.FC = () => {
     console.log(value_inner_4);
   }, [value_1, value_2, value_3, value_inner_4]);
 
-  useEffect(() => {
-    // TRANSLATE THE RIGHT TEXT
-    // TRANSLATE THE RIGHT TEXT
-    // TRANSLATE THE RIGHT TEXT
+  const [record_Name, setrecord_Name] = useState("");
+  const [edit_text, setedit_text] = useState(false);
 
-    console.log(right_first_text.current);
-  }, [value_3]);
+  const [isloggedin, setisloggedin] = useState(false);
+  const router = useRouter();
+
+  // check if logged in
+  useEffect(() => {
+    // Check initial session
+    const checkInitialSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        setisloggedin(true);
+      }
+    };
+
+    checkInitialSession();
+  }, [router]);
 
   return (
     <>
-      <h2
-        className={`uppercase md:text-[4vw] text-[8vw]  leading-[9.5vw] md:leading-[4.5vw] md:pt-0 pt-[10vw] md:px-0 px-[3%] text-center ${spline_font.className} font-medium text-[#5C3C43]`}
-      >
-        She takes a multi-method approach
-      </h2>
+      {edit_text && (
+        <Modal_text_edit
+          edit_text={edit_text}
+          record_Name={record_Name}
+          setedit_text={setedit_text}
+          table={"approach"}
+        />
+      )}
+      <div className="relative mx-auto  w-fit ">
+        {isloggedin && (
+          <Edit_text
+            record={"heading"}
+            setedit_text={setedit_text}
+            setrecord_Name={setrecord_Name}
+            text={active_user_data[0].heading}
+          />
+        )}
+        <h2
+          className={`uppercase  md:text-[4vw] text-[7vw]  leading-[8.5vw] md:leading-[4.5vw] md:pt-0 pt-[10vw] md:px-0 px-[3%] text-center ${spline_font.className} font-medium text-[#5C3C43]`}
+          dangerouslySetInnerHTML={{ __html: active_user_data[0].heading }}
+        >
+          {/* {active_user_data[0].heading} */}
+        </h2>{" "}
+      </div>
       <div
         ref={first_text_ref}
-        className={` overflow-hidden w-full md:px-[10vw] ${Helvetica_medium.className} md:text-[1.1vw] text-[4vw] flex-col md:flex-row gap-[5vw] px-[3%] py-[8vw]  md:pb-0 md:pt-[4vw] text-[#000000] flex md:gap-[10%] `}
+        className={` overflow-hidden w-full  md:mb-[-20vh] md:px-[10vw] ${Helvetica_medium.className} md:text-[1.1vw] text-[4vw] flex-col md:flex-row gap-[5vw] px-[3%] py-[8vw]  md:pb-0 md:pt-[4vw] text-[#000000] flex md:gap-[10%] `}
       >
-        <div className="overflow-hidden">
+        <div className="overflow-hidden  w-full relative">
+          {isloggedin && (
+            <Edit_text
+              record={"caption_one"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].caption_one}
+            />
+          )}
+
           <p
-            className={`${start_frist_text ? "" : "translate-y-[100%]"}`}
+            // className={`${start_frist_text ? "" : "translate-y-[100%]"}`}
             style={{ transition: "0.8s ease" }}
           >
-            Erica Boothby is a psychologist who studies social connection and
-            the psychological barriers that inhibit connection. Feeling socially
-            disconnected or excluded has many detrimental effects—making
-            employees feel alienated, managers feel burned out,{" "}
+            {active_user_data[0].caption_one}
           </p>
         </div>
 
-        <div className="overflow-hidden">
+        <div className="overflow-hidden w-full  relative">
+          {isloggedin && (
+            <Edit_text
+              record={"caption_two"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].caption_two}
+            />
+          )}
           <p
-            className={`${start_frist_text ? "" : "translate-y-[100%]"}`}
+            // className={`${start_frist_text ? "" : "translate-y-[100%]"}`}
             style={{ transition: "0.8s ease" }}
           >
-            and people from underrepresented groups feel like their voices arent
-            heard. Ericas research aims to illuminate what makes people feel
-            more (or less) connected, and what we can do to improve peoples
-            feelings of connection and inclusion.
+            {active_user_data[0].caption_two}
           </p>
         </div>
 
         {/* DOWNLOAD CV */}
-        <Link
-          style={{
-            whiteSpace: "nowrap",
-            transition: "0.8s ease",
-            opacity: start_frist_text ? 1 : 0,
-          }}
-          target="_blank"
-          href={
-            "https://static1.squarespace.com/static/53dd6293e4b0d1d6aa7a2e72/t/64d3dc81cfc33c11b43dbb2a/1691606146249/Erica+Boothby+CV.pdf"
-          }
+        <div
           className={` ${Helvetica_light.className} ${
             start_frist_text ? "" : "translate-y-[100%]"
           } uppercase overflow-hidden  md:p-[0.5vw] p-[2vw] rounded-[8vw] w-fit group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%] md:hidden  md:rounded-[2vw] bg-[black] backdrop-blur-2xl bg-opacity-[20%] `}
         >
-          <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw] flex justify-center items-center   py-[2.5vw] px-[8vw] md:py-[0.7vw] md:px-[1.5vw]">
-            <p className="inline-block md:text-[1vw] text-[white] group-hover:text-white text-[3.5vw]">
-              View CV
-            </p>
-          </div>
-        </Link>
+          {" "}
+          {isloggedin && (
+            <Edit_text
+              record={"cv"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].cv}
+            />
+          )}
+          <Link
+            style={{
+              whiteSpace: "nowrap",
+              transition: "0.8s ease",
+              opacity: start_frist_text ? 1 : 0,
+            }}
+            target="_blank"
+            href={active_user_data[0].cv}
+          >
+            <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw] flex justify-center items-center   py-[2.5vw] px-[8vw] md:py-[0.7vw] md:px-[1.5vw]">
+              <p className="inline-block md:text-[1vw] text-[white] group-hover:text-white text-[3.5vw] relative">
+                View CV
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
-      <p
+      {/* <p
         className={`text-[4.5vw] mb-[7vw] mt-[4vw] md:hidden uppercase text-[#000000] text-center`}
       >
         Education
-      </p>{" "}
+      </p>{" "} */}
       <div className="z-[10]  md:hidden flex flex-col items-center">
         <h3
-          className={`text-[12vw] text-[#5C3C43] ${spline_font.className}  font-medium`}
+          className={`text-[12vw] relative text-[#5C3C43] ${spline_font.className}  font-medium`}
         >
-          Yale
+          {isloggedin && (
+            <Edit_text
+              record={"first_university"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].first_university}
+            />
+          )}
+          {active_user_data[0].first_university}
         </h3>
-        <p className={`text-[4vw] text-[#000000]`}>University</p>
+        <p className={`text-[4vw] relative text-[#000000]`}>
+          {isloggedin && (
+            <Edit_text
+              record={"first_school_type"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].first_school_type}
+            />
+          )}
+          {active_user_data[0].first_school_type}
+        </p>
       </div>
       <div
         ref={ref}
         className="w-full h-[300vh]  flex relative flex-col items-start "
       >
         <div className="w-full hidden   flex-col h-[100vh] md:flex justify-center items-center sticky top-0 left-0 ">
-          <p className={`md:text-[1vw] uppercase text-[#000000] text-center`}>
+          {/* <p className={`md:text-[1vw] uppercase text-[#000000] text-center`}>
             Education
-          </p>
+          </p> */}
 
           <div
             ref={left_first_text}
@@ -261,40 +336,89 @@ const AnimatedLines: React.FC = () => {
           >
             <div className="z-[10]">
               <h3
-                className={`md:text-[4vw] text-[#5C3C43] ${spline_font.className}  font-medium`}
+                className={`md:text-[4vw] relative text-[#5C3C43] ${spline_font.className}  font-medium`}
               >
-                Yale
+                {isloggedin && (
+                  <Edit_text
+                    record={"first_university"}
+                    setedit_text={setedit_text}
+                    setrecord_Name={setrecord_Name}
+                    text={active_user_data[0].first_university}
+                  />
+                )}
+                {isloggedin && (
+                  <Edit_text
+                    record={"first_school_type"}
+                    setedit_text={setedit_text}
+                    setrecord_Name={setrecord_Name}
+                    text={active_user_data[0].first_school_type}
+                  />
+                )}
+                {active_user_data[0].first_university}
               </h3>
-              <p className={`md:text-[1vw] text-[#000000]`}>University</p>
+              <p className={`md:text-[1vw] text-[#000000] relative`}>
+                {isloggedin && (
+                  <Edit_text
+                    record={"first_school_type"}
+                    setedit_text={setedit_text}
+                    setrecord_Name={setrecord_Name}
+                    text={active_user_data[0].first_school_type}
+                  />
+                )}
+                {active_user_data[0].first_school_type}
+              </p>
             </div>
             {/* DOWNLOAD CV */}
-            <Link
+            <div
+              className={` ${Helvetica_light.className}  absolute top-[1vw] left-[50%] translate-x-[-50%] uppercase overflow-hidden  md:p-[0.5vw] p-[2vw] rounded-[8vw] w-fit group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[2vw] bg-[black] backdrop-blur-2xl bg-opacity-[20%] `}
               ref={right_second_text}
               style={{
                 whiteSpace: "nowrap",
-                // transition: "0.9s ease",
-                // transform: start_anime ? "translate(0,0)" : "translate(0%,80%)",
               }}
-              href={
-                "https://static1.squarespace.com/static/53dd6293e4b0d1d6aa7a2e72/t/64d3dc81cfc33c11b43dbb2a/1691606146249/Erica+Boothby+CV.pdf"
-              }
-              target="_blank"
-              className={` ${Helvetica_light.className}  absolute top-[1vw] left-[50%] translate-x-[-50%] uppercase overflow-hidden  md:p-[0.5vw] p-[2vw] rounded-[8vw] w-fit group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[2vw] bg-[black] backdrop-blur-2xl bg-opacity-[20%] `}
             >
-              <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw] flex justify-center items-center   py-[2.5vw] px-[8vw] md:py-[0.7vw] md:px-[1.5vw]">
-                <p className="inline-block md:text-[1vw] text-[white] group-hover:text-white text-[3.5vw]">
-                  View CV
-                </p>
-              </div>
-            </Link>
+              {" "}
+              {isloggedin && (
+                <Edit_text
+                  record={"cv"}
+                  setedit_text={setedit_text}
+                  setrecord_Name={setrecord_Name}
+                  text={active_user_data[0].cv}
+                />
+              )}
+              <Link href={active_user_data[0].cv} target="_blank">
+                <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw] flex justify-center items-center   py-[2.5vw] px-[8vw] md:py-[0.7vw] md:px-[1.5vw]">
+                  <p className="inline-block md:text-[1vw] text-[white] group-hover:text-white text-[3.5vw] ">
+                    View CV
+                  </p>
+                </div>
+              </Link>
+            </div>
             <div ref={right_first_text} className="z-[10]">
               <h3
-                className={`md:text-[4vw] text-[#5C3C43] md:text-end ${spline_font.className}  font-medium`}
+                className={`md:text-[4vw] text-[#5C3C43] relative md:text-end ${spline_font.className}  font-medium`}
               >
-                Wharton
+                {isloggedin && (
+                  <Edit_text
+                    record={"second_university"}
+                    setedit_text={setedit_text}
+                    setrecord_Name={setrecord_Name}
+                    text={active_user_data[0].second_university}
+                  />
+                )}
+                {active_user_data[0].second_university}
               </h3>
-              <p className={`md:text-[1vw] text-[#000000] md:text-end`}>
-                University of Pennsylvania
+              <p
+                className={`md:text-[1vw] relative text-[#000000] md:text-end`}
+              >
+                {isloggedin && (
+                  <Edit_text
+                    record={"second_school_type"}
+                    setedit_text={setedit_text}
+                    setrecord_Name={setrecord_Name}
+                    text={active_user_data[0].second_school_type}
+                  />
+                )}
+                {active_user_data[0].second_school_type}
               </p>
             </div>
           </div>
@@ -320,19 +444,43 @@ const AnimatedLines: React.FC = () => {
                   ref={left_second_text}
                   className={`border-[#000000] md:px-[1vw] border md:rounded-[2vw] md:text-[1vw] absolute   left-[2.5vw] z-[10] bg-[#DFE4DF]`}
                 >
-                  Ph.D. Social Psychology
+                  {isloggedin && (
+                    <Edit_text
+                      record={"first_school_position"}
+                      setedit_text={setedit_text}
+                      setrecord_Name={setrecord_Name}
+                      text={active_user_data[0].first_school_position}
+                    />
+                  )}
+                  {active_user_data[0].first_school_position}
                 </p>
                 <p
                   ref={middle_first_text}
                   className={`border-[#000000] md:px-[1vw] border md:rounded-[2vw] md:text-[1vw] absolute bottom-[3vw] left-[50%] z-[10] translate-x-[-50%] bg-[#DFE4DF]`}
                 >
-                  A bit About Erica
+                  {isloggedin && (
+                    <Edit_text
+                      record={"bit_about_erica"}
+                      setedit_text={setedit_text}
+                      setrecord_Name={setrecord_Name}
+                      text={active_user_data[0].bit_about_erica}
+                    />
+                  )}
+                  {active_user_data[0].bit_about_erica}
                 </p>
                 <p
                   ref={right_three_text}
                   className={`border-[#000000] md:px-[1vw] border md:rounded-[2vw] md:text-[1vw] absolute   right-[2.5vw] z-[10] bg-[#DFE4DF]`}
                 >
-                  Senior Lecturer{" "}
+                  {isloggedin && (
+                    <Edit_text
+                      record={"second_school_position"}
+                      setedit_text={setedit_text}
+                      setrecord_Name={setrecord_Name}
+                      text={active_user_data[0].second_school_position}
+                    />
+                  )}
+                  {active_user_data[0].second_school_position}
                 </p>
                 <div
                   className="w-[45%]  relative flex justify-end  overflow-hidden"
@@ -384,15 +532,31 @@ const AnimatedLines: React.FC = () => {
           <div className="h-full w-full  flex flex-col py-[20vh]  items-center justify-between absolute top-0 left-0">
             <p
               ref={mobile_up_text}
-              className={`border-[#000000] z-[10] w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
+              className={`border-[#000000] relative z-[10] w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
             >
-              Ph.D. Social Psychology
+              {isloggedin && (
+                <Edit_text
+                  record={"first_school_position"}
+                  setedit_text={setedit_text}
+                  setrecord_Name={setrecord_Name}
+                  text={active_user_data[0].first_school_position}
+                />
+              )}
+              {active_user_data[0].first_school_position}
             </p>
             <p
               ref={mobile_down_text}
-              className={`border-[#000000] z-[10] w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
+              className={`border-[#000000] z-[10] relative w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
             >
-              Senior Lecturer{" "}
+              {isloggedin && (
+                <Edit_text
+                  record={"second_school_position"}
+                  setedit_text={setedit_text}
+                  setrecord_Name={setrecord_Name}
+                  text={active_user_data[0].second_school_position}
+                />
+              )}
+              {active_user_data[0].second_school_position}{" "}
             </p>
           </div>
 
@@ -455,59 +619,82 @@ const AnimatedLines: React.FC = () => {
       </div>{" "}
       <div className="z-[10]  md:hidden flex flex-col items-center">
         <h3
-          className={`text-[12vw] text-[#5C3C43] ${spline_font.className}  font-medium`}
+          className={`text-[12vw] relative text-[#5C3C43] ${spline_font.className}  font-medium`}
         >
-          Wharton
+          {isloggedin && (
+            <Edit_text
+              record={"second_university"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].second_university}
+            />
+          )}
+          {active_user_data[0].second_university}
         </h3>
-        <p className={`text-[4vw] text-[#000000]`}>
-          {" "}
-          University of Pennsylvania
+        <p className={`text-[4vw] text-[#000000] relative`}>
+          {isloggedin && (
+            <Edit_text
+              record={"second_school_type"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].second_school_type}
+            />
+          )}
+          {active_user_data[0].second_school_type}
         </p>
       </div>
       {/* A BIT ABOUT ERICA */}
       <div className="flex justify-center md:hidden mt-[15vw] mb-[2.5vw]">
         <p
           // ref={right_second_text}
-          className={`border-[#000000] z-[10] w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
+          className={`border-[#000000] relative z-[10] w-fit px-[3vw] border py-[1vw] rounded-[4vw] text-[4vw]  bg-[#DFE4DF]`}
         >
-          A bit About Erica
+          {isloggedin && (
+            <Edit_text
+              record={"bit_about_erica"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].bit_about_erica}
+            />
+          )}
+          {active_user_data[0].bit_about_erica}
         </p>
       </div>
       <div
         ref={second_text_ref}
-        className={`  w-full md:px-[10vw] ${Helvetica_medium.className} md:text-[1.1vw] text-[4vw] flex-col md:flex-row gap-[5vw]  px-[3%] py-[8vw]  md:pb-0 md:pt-[2vw] text-[#000000] flex md:gap-[10%] `}
+        className={`  w-full md:px-[10vw]  md:mt-[-20vh]  ${Helvetica_medium.className} md:text-[1.1vw] text-[4vw] flex-col md:flex-row gap-[5vw]  px-[3%] py-[8vw]  md:pb-0 md:pt-[2vw] text-[#000000] flex md:gap-[10%] `}
       >
-        <div className="overflow-hidden">
+        <div className="overflow-hidden relative w-full ">
+          {isloggedin && (
+            <Edit_text
+              record={"caption_three"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].caption_three}
+            />
+          )}
           <p
-            className={`${start_second_text ? "" : "translate-y-[100%]"}`}
+            // className={`${start_second_text ? "" : "translate-y-[100%]"}`}
             style={{ transition: "0.8s ease" }}
           >
-            She takes a multi-method approach, using laboratory, longitudinal,
-            online, and dyadic experiments, as well as large scale interventions
-            and field experiments in partnership with organizations. Ultimately,
-            her work aims to improve peoples social lives, in the workplace and
-            beyond. Some of Ericas research interests are: early-stage
-            relationship development (e.g., meeting colleagues, making friends),
-            diversity in networking, metaperception, conversation, shared
-            experience, and prosocial behavior.
+            {active_user_data[0].caption_three}
           </p>
         </div>
 
-        <div className="overflow-hidden">
+        <div className="overflow-hidden w-full relative">
+          {isloggedin && (
+            <Edit_text
+              record={"caption_four"}
+              setedit_text={setedit_text}
+              setrecord_Name={setrecord_Name}
+              text={active_user_data[0].caption_four}
+            />
+          )}
           <p
-            className={`${start_second_text ? "" : "translate-y-[100%]"}`}
+            // className={`${start_second_text ? "" : "translate-y-[100%]"}`}
             style={{ transition: "0.8s ease" }}
           >
-            Her work aims to advance our understanding of human behavior while
-            having direct implications for the kinds of real-world challenges
-            people face every day in their roles as friends, romantic partners,
-            colleagues, managers, and consumers. Ericas research has been
-            published in top academic journals, including Psychological Science,
-            Journal of Personality and Social Psychology, and Organizational
-            Behavior and Human Decision Processes, and has featured in media
-            outlets such as Harvard Business Review, The New York Times,
-            National Public Radio, and The Washington Post. Her work was
-            recently covered extensively on NPRs Hidden Brain.
+            {active_user_data[0].caption_four}
           </p>
         </div>
       </div>

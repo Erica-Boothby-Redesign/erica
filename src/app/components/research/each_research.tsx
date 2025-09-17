@@ -138,10 +138,14 @@ const Each_research = ({ product_data }: any) => {
               <div className="md:w-[45vw] ">
                 <Image
                   src={e.image}
-                  unoptimized
-                  height="0"
-                  width="0"
-                  alt="example blog"
+                  alt={e.title}
+                  style={{
+                    transition: "0.7s ease",
+                    //   transform: `translate(-50%,-50%)`,
+                  }}
+                  width={500}
+                  height={600}
+                  // fill
                   className="w-full h-fit md:rounded-none rounded-[3vw]"
                 />
               </div>

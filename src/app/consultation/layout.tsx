@@ -12,10 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={``} style={{ backgroundColor: "#DFE4DF" }}>
-        {children}
-      </body>
-    </html>
+    <main className={``} style={{ backgroundColor: "#DFE4DF" }}>
+      {children}
+    </main>
   );
 }

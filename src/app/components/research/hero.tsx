@@ -92,7 +92,7 @@ const Research_hero = ({ page_data }: any) => {
         <Image
           src={hero}
           alt="hero image"
-          className="absolute md:top-0 md:left-0 top-[50%] translate-x-[-50%] translate-y-[-50%]  md:translate-x-0 md:translate-y-0 left-[50%] md:scale-[1]  scale-[3] w-full h-fit"
+          className="absolute object-cover h-full w-full md:top-0 md:left-0 top-[50%] translate-x-[-50%] translate-y-[-50%]  md:translate-x-0 md:translate-y-0 left-[50%]  md:w-full "
           style={{
             transition: yvalue > 1 ? "" : "0.45s ease",
             opacity: start_anime ? 1 : 0,

@@ -3,15 +3,9 @@
 import { supabase } from "@/app/utils/supabaseClient";
 
 const Edit_each_publication = ({
-  setdelete_publication,
-  setpublication_title,
-  title,
-  body,
-  view_data,
-  pdf_data,
-  edit_each_publication_modal_param,
   id,
-  img,
+  setedit_ID,
+  setadd_publdcication,
 }: any) => {
   const deletePublicationById = async (id: number) => {
     try {
@@ -50,14 +44,8 @@ const Edit_each_publication = ({
         <button
           className=" md:w-[8vw] md:h-[3vw] h-[10vw] w-[30vw] rounded-[2vw] capitalize bg-white  md:rounded-[0.5vw] hover:bg-opacity-[60%] backdrop-blur-2xl text-center "
           onClick={() => {
-            edit_each_publication_modal_param(
-              title,
-              body,
-              view_data,
-              pdf_data,
-              id,
-              img,
-            );
+            setedit_ID(id);
+            setadd_publdcication(true);
           }}
         >
           edit
@@ -65,8 +53,6 @@ const Edit_each_publication = ({
         <button
           className=" md:w-[8vw] md:h-[3vw] h-[10vw] w-[30vw] rounded-[2vw] capitalize bg-white  md:rounded-[0.5vw] hover:bg-opacity-[60%] backdrop-blur-2xl text-center "
           onClick={() => {
-            setpublication_title(title);
-            setdelete_publication(true);
             handleDeleteClick(id);
           }}
         >

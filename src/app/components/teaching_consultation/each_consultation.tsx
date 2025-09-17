@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Bricolage_grotesk_bold,
   Bt_Beau_Regualr,
   Helvetica_light,
   spline_font,
@@ -22,6 +23,8 @@ import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { supabase } from "@/app/utils/supabaseClient";
 import Read_more from "./read_more_modal";
+import Contact_form from "../general-component/contact_form";
+import Order_consultation_modal from "./order_consultation_modal";
 const Each_consultation = ({ product_data }: any) => {
   const sectionRef = useRef(null);
 
@@ -216,7 +219,7 @@ const Each_consultation = ({ product_data }: any) => {
       const { data, error } = await supabase
         .from("consultation")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("order", { ascending: false });
 
       if (error) {
         console.error("Error fetching initial data:", error);
@@ -288,13 +291,22 @@ const Each_consultation = ({ product_data }: any) => {
   const [read_more_body, setread_more_body] = useState("");
   const [read_more_title, setread_more_title] = useState("");
   const [open_read_more, setopen_read_more] = useState(false);
+  const [open_contact_form, setopen_contact_form] = useState(false);
+  const [open_order_consultation, setopen_order_consultation] = useState(false);
 
   return (
     <>
+      {open_order_consultation && (
+        <Order_consultation_modal
+          setopen_order_consultation={setopen_order_consultation}
+          data={data}
+        />
+      )}
       {/* buttons to add consultation */}
       {isloggedin && (
         <Add_consultation
           // refresh_all_params={refresh_all_params}
+          setopen_order_consultation={setopen_order_consultation}
           setconsultation_title={setconsultation_title}
           setdelete_consulation={setdelete_consulation}
           refresh_all_params={refresh_all_params}
@@ -352,13 +364,6 @@ const Each_consultation = ({ product_data }: any) => {
         ref={sectionRef}
       >
         <div className="flex  justify-center items-center   sticky bottom-0 h-[100vh]  w-full ">
-          {/* the customize scroll bar starts */}
-          <div className="absolute md:right-[3vw] z-[10] border-[#0e257756]  flex w-[2%] right-[1.5%]  top-[50%] translate-y-[-50%] md:w-[0.6vw] rounded-[3vw]  lg:h-[28vw] md:h-[40vw] bg-black mix-blend-overlay  h-[140vw]  overflow-hidden">
-            <div
-              className="fw-full bg-[#0E2477]"
-              style={{ height: `${height * 10}%` }}
-            ></div>
-          </div>
           {/* the customized scroll bar ends */}
           {data.map((e: any, index: any) => {
             // Parse the JSON string to get the color object
@@ -376,7 +381,7 @@ const Each_consultation = ({ product_data }: any) => {
                     itemsRefs.current[index] = ref;
                   }
                 }}
-                className={` absolute top-[50%] translate-x-[-50%] left-[50%] translate-y-[-50%]  w-full md:gap-[4vw] flex flex-col md:justify-center justify-end  md:pb-0 pb-[10vw] items-center gap-[7vw] h-full  overflow-hidden   `}
+                className={` absolute top-[50%] translate-x-[-50%] left-[50%] translate-y-[-50%]  w-full md:gap-[4vw] flex flex-col md:justify-center justify-end  md:pb-0 pb-[15vw] items-center gap-[7vw] h-full  overflow-hidden   `}
                 style={{
                   transition: "opacity 0.6s ease",
                   backgroundColor: bgColor,
@@ -413,76 +418,94 @@ const Each_consultation = ({ product_data }: any) => {
                     bg_img={e.bg_img}
                   />
                 )}
-                <div className="flex md:px-[10vw] px-[5%] md:flex-row flex-col  md:justify-between w-full md:gap-0 gap-[7vw] ">
+
+                <div
+                  className={`${
+                    (index + 1) % 2 === 1
+                      ? "md:flex-row"
+                      : "md:flex-row-reverse"
+                  } flex md:px-[10vw] px-[5%]  flex-col  md:justify-between w-full md:items-center md:gap-0 gap-[7vw] `}
+                >
                   {/* the left section */}
                   <div
-                    className="flex  flex-col  md:w-[30vw]  md:gap-[4vw]"
+                    className="flex  flex-col w-[60%]  md:w-[30%]  md:gap-[4vw]"
                     style={{ backgroundColor: e.bgColor }}
                   >
-                    <h2
-                      className={` ${spline_font.className} uppercase font-semibold md:text-[4vw] md:leading-[4.4vw]  text-[10vw] leading-[11vw]`}
-                      style={{ color: textColor }}
-                    >
-                      {e.heading}
-                    </h2>
-
                     <img
                       src={e.img}
                       alt={e.heading}
-                      className="w-full md:inline-block hidden h-fit md:rounded-[6vw]"
+                      className="w-full rounded-[5vw] h-fit md:rounded-[2vw]"
                     />
                   </div>
 
                   {/* now the writing  */}
-                  <div className=" md:w-[30vw] gap-[3vw] flex flex-col md:gap-[2vw]">
+                  <div className=" md:w-[60%]  gap-[3vw] flex flex-col md:gap-[1vw]">
+                    <h2
+                      className={` ${spline_font.className} uppercase font-semibold md:text-[4vw] md:leading-[4.4vw] text-white   text-[6vw] leading-[7vw]`}
+                      // style={{ color: textColor }}
+                    >
+                      {e.heading}
+                    </h2>
                     <p
-                      className={` ${Helvetica_light.className} md:border-l-[0.3vw] text-[3.5vw] pl-[3vw] border-l-[1.2vw] py-[3vw] border-[white] md:pl-[1vw] md:py-[1vw] text-[white] md:text-[1.2vw] [&_a]:underline underline-offset-4`}
+                      className={` ${Helvetica_light.className}  text-[3.2vw]  py-[3vw]  md:py-[1vw] text-[white] md:text-[1vw] [&_a]:underline underline-offset-4`}
                       // dangerouslySetInnerHTML={{ __html: e.body }}
                       dangerouslySetInnerHTML={{
                         __html: getCaption(e.body, 60),
                       }}
                     ></p>
 
-                    <button
-                      onClick={() => {
-                        setread_more_body(e.body);
-                        setread_more_title(e.heading);
-                        setopen_read_more(true);
-                      }}
-                      // href={e.div}
-                      className={` ${Bt_Beau_Regualr.className} md:text-[1vw] md:w-[10vw] w-[40vw] h-[10vw] ml-[5vw] flex justify-center items-center md:h-[2.6vw]  border-[white] border-[0.1vw] md:rounded-[3.7vw]  md:ml-[1vw] group relative overflow-hidden rounded-[3vw]`}
-                    >
-                      <p
-                        style={{ transition: "0.5s ease" }}
-                        className="group-hover:text-white z-[10] text-[white]"
+                    <div className=" md:flex-row gap-[5vw]  md:gap-[2vw] items-center flex ">
+                      <button
+                        onClick={() => {
+                          setread_more_body(e.body);
+                          setread_more_title(e.heading);
+                          setopen_read_more(true);
+                        }}
+                        // href={e.div}
+                        className={` ${Bt_Beau_Regualr.className} md:text-[1vw] md:w-[10vw] w-[40vw] h-[95%] flex justify-center items-center md:h-[2.8vw]  border-[white] border-[0.1vw] md:rounded-[3vw]   group relative overflow-hidden rounded-[3vw]`}
                       >
-                        {" "}
-                        Read more{" "}
-                      </p>
+                        <p
+                          style={{ transition: "0.5s ease" }}
+                          className="group-hover:text-white z-[10] text-[3.5vw] md:text-[1.1vw] text-[white]"
+                        >
+                          {" "}
+                          Read more{" "}
+                        </p>
 
-                      {/* <Image
+                        {/* <Image
                         src={arrow}
                         alt="arrow"
                         className="md:w-[1.7vw] z-[10] h-fit"
                       /> */}
-                      <div
-                        className="w-full h-full bg-[#440C0C] absolute left-0 top-[100%] group-hover:top-0 "
-                        style={{ transition: "0.5s ease" }}
-                      ></div>
-                    </button>
+                        <div
+                          className="w-full h-full bg-[#440C0C] absolute left-0 top-[100%] group-hover:top-0 "
+                          style={{ transition: "0.5s ease" }}
+                        ></div>
+                      </button>
+                      {/* REACH OUT TO ME TEXT */}
+                      <button
+                        style={{
+                          whiteSpace: "nowrap",
+                          transition: "0.5s ease",
+                        }}
+                        onClick={() => {
+                          setopen_contact_form(true);
+                        }}
+                        className={` ${Bricolage_grotesk_bold.className} uppercase overflow-hidden w-fit  md:p-[0.3vw]  p-[2vw] rounded-[8vw] group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[2vw] bg-[white] backdrop-blur-2xl bg-opacity-[10%] `}
+                      >
+                        <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw]  flex justify-center items-center py-[2.5vw] px-[8vw] md:py-[0.6vw] md:px-[1.5vw]">
+                          <p className="inline-block md:text-[1vw] text-[white] group-hover:text-white">
+                            Reach out to me
+                          </p>
+                        </div>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                {/* this image is for mobile */}
-                <div className="md:hidden px-[5%]">
-                  <img
-                    src={e.img}
-                    alt={e.heading}
-                    className="w-full   h-fit rounded-[10vw]"
-                  />
-                </div>
+
                 {/* institue and location segment */}
                 <div
-                  className={` ${Bt_Beau_Regualr.className} w-full border-y border-[white]  md:py-[1.6vw] flex justify-center items-center md:gap-[4vw] text-white text-opacity-[100%] md:text-[1.1vw] text-[3.5vw]  md:px-[10vw] px-[5%] gap-[3vw] py-[3vw]`}
+                  className={` opacity-[70%] ${Bt_Beau_Regualr.className} w-full border-y border-[white]  md:py-[1.6vw] flex justify-center items-center md:gap-[4vw] text-white text-opacity-[100%] md:text-[1.1vw] text-[3.5vw]  md:px-[10vw] px-[5%] gap-[3vw] py-[3vw]`}
                 >
                   <p className="" style={{ whiteSpace: "nowrap" }}>
                     {e.institue}
@@ -490,13 +513,21 @@ const Each_consultation = ({ product_data }: any) => {
                   <div className="w-full relative h-[0.5vw] md:h-[0.1vw] bg-[white]  flex justify-end items-center">
                     <div className="md:w-[0.4vw] w-[1vw] h-[1vw] md:h-[0.4vw] rounded-[100%] bg-[white]   "></div>
                   </div>
-                  <p className="" style={{ whiteSpace: "nowrap" }}>
+                  {/* <p className="" style={{ whiteSpace: "nowrap" }}>
                     ({e.year})
-                  </p>
+                  </p> */}
                 </div>
               </div>
             );
           })}
+
+          {/* the customize scroll bar starts */}
+          {/* <div className="absolute md:right-[3vw]  border-[#0e257756]  flex w-[1%] right-[1.5%]  top-[50%] translate-y-[-50%] md:w-[0.2vw] rounded-[3vw]  lg:h-[28vw] md:h-[40vw]   h-[140vw] z-[1000] bg-white overflow-hidden">
+            <div
+              className="fw-full bg-[black] z-[100]"
+              style={{ height: `${height * 10}%` }}
+            ></div>
+          </div> */}
         </div>
       </div>
 
@@ -507,6 +538,11 @@ const Each_consultation = ({ product_data }: any) => {
           title={read_more_title}
           setopen_read_more={setopen_read_more}
         />
+      )}
+
+      {/* reach out to use contact modal */}
+      {open_contact_form && (
+        <Contact_form setopen_contact_form={setopen_contact_form} />
       )}
     </>
   );

@@ -10,7 +10,7 @@ const fetchProducts = async () => {
   const { data, error } = await supabase
     .from("media")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("order", { ascending: true });
 
   // if (error) throw notFound();
   // console.log(data);

@@ -83,11 +83,11 @@ const Home_research = ({ research_items }: any) => {
     });
     gsap.to(text_ref.current, {
       xPercent: calwidth < 768 ? "" : -switch_animation_value,
-      duration: 0.5, // Adjust duration as needed
+      duration: 1, // Adjust duration as needed
     });
     gsap.to(inside_ref.current, {
       xPercent: calwidth < 768 ? "" : translate_value,
-      duration: 0.5, // Adjust duration as needed
+      duration: 1, // Adjust duration as needed
     });
   }, [switch_animation_value, opac_animation, translate_value]);
 
@@ -200,21 +200,21 @@ const Home_research = ({ research_items }: any) => {
                   >
                     <div className="w-full md:h-[29vw]  md:rounded-[1.5vw]   overflow-hidden relative flex justify-center items-center ">
                       <Image
-                        unoptimized
-                        height="0"
-                        width="0"
                         src={e.image}
                         alt={e.title}
                         style={{
                           transition: "0.7s ease",
                           //   transform: `translate(-50%,-50%)`,
                         }}
-                        className="w-full  group-hover:scale-[1.8] scale-[1.9]   h-fit"
+                        width={500}
+                        height={600}
+                        // fill
+                        className="w-full h-full  object-cover group-hover:scale-[1.1]"
                       />
                     </div>
 
                     <p
-                      className={`${dm_sans_font.className} md:pl-[0.5vw] uppercase md:pr-[2vw] font-medium md:text-[1.1vw]`}
+                      className={`${dm_sans_font.className} md:pl-[0.5vw]  md:pr-[2vw] font-medium md:text-[1.1vw]`}
                     >
                       {truncateText(e.caption, 13)}{" "}
                     </p>
@@ -252,13 +252,13 @@ const Home_research = ({ research_items }: any) => {
                         style={{
                           transition: "0.7s ease",
                         }}
-                        className="w-full  group-hover:scale-[1.8] scale-[1.95]   h-fit"
+                        className="w-full h-full  object-cover group-hover:scale-[1.1]"
                         // className="h-full w-auto"
                       />
                     </div>
 
                     <p
-                      className={`${dm_sans_font.className} uppercase   font-medium leading-[5vw] p-[3vw]  text-[4vw] 
+                      className={`${dm_sans_font.className}    font-medium leading-[5vw] p-[3vw]  text-[4vw] 
                  `}
                     >
                       {truncateText(e.caption, 15)}{" "}

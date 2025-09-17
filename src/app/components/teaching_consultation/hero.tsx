@@ -175,7 +175,7 @@ const Teaching_hero = ({ page_data }: any) => {
             width="0"
             height="0"
             alt="hero image"
-            className="w-full h-fit absolute md:top-0 md:left-0 top-[50%] translate-x-[-50%] translate-y-[-50%]  md:translate-x-0 md:translate-y-0 left-[50%] md:scale-[1]  scale-[3.5] "
+            className="w-full  absolute md:top-0 md:left-0 top-[50%] translate-x-[-50%] translate-y-[-50%]  md:translate-x-0 md:translate-y-0 left-[50%]   h-full object-cover "
             style={{
               transition: yvalue > 1 ? "" : "0.45s ease",
               opacity: start_anime ? 1 : 0,

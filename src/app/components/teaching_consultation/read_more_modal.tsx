@@ -3,6 +3,7 @@
 import {
   Bt_Beau_Regualr,
   Bt_Beau_medium,
+  Helvetica_light,
   Media_san_regular,
 } from "@/app/utils/fonts";
 import { useEffect, useState } from "react";
@@ -66,7 +67,7 @@ const Read_more = ({ body, title, setopen_read_more }: any) => {
           <div className="md:overflow-hidden overflow-auto">
             <p
               dangerouslySetInnerHTML={{ __html: body }}
-              className={`${Bt_Beau_medium.className} [&_a]:underline underline-offset-4 md:text-[1vw] px-[5%] text-[4vw] [&_a]:font-medium [&_a]:text-[#440C0C]`}
+              className={` ${Helvetica_light.className} [&_a]:underline underline-offset-4 md:text-[1vw] px-[5%] text-[3.6vw] [&_a]:font-medium [&_a]:text-[#440C0C]`}
             ></p>
           </div>
         </div>

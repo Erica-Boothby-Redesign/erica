@@ -11,10 +11,12 @@ const fetchProducts = async () => {
   const { data, error } = await supabase
     .from("publication")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("order", { ascending: false })
+    .order("id", { ascending: true }); // Secondary sort key
 
+  // console.log(data);
   // if (error) throw notFound();
-  console.log(data);
+  // console.log(data);
   return data;
 };
 

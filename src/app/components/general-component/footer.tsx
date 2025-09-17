@@ -15,6 +15,8 @@ import goggle from "../../../../public/images/footer/goggle.png";
 import linkden from "../../../../public/images/footer/linkden.png";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import Contact_form from "./contact_form";
+import { useState } from "react";
 const Footer = ({ bg }: any) => {
   const socai_items = [
     {
@@ -72,6 +74,7 @@ const Footer = ({ bg }: any) => {
     }
   };
 
+  const [open_contact_form, setopen_contact_form] = useState(false);
   return (
     <>
       <div style={{ backgroundColor: bg ? bg : "" }} className="w-full">
@@ -92,14 +95,16 @@ const Footer = ({ bg }: any) => {
               </h2>
             </div> */}
 
-            <div className="w-full md:justify-between   md:flex-row flex-col md:gap-[5%] gap-[5vw] flex ">
+            <div className="w-full  md:justify-between   md:flex-row flex-col md:gap-[5%] gap-[5vw] flex ">
               <div className="md:w-[80%] gap-[3vw]  md:gap-[1.2vw] flex flex-col  text-white ">
                 <h3
-                  className={` ${Bricolage_grotesk_bold.className} tracking-wider items-center flex md:text-[8vw] text-[10vw] md:leading-[8vw] `}
+                  className={` ${Bricolage_grotesk_bold.className} tracking-wider items-center flex md:text-[8vw]  text-[10vw] md:leading-[6vw] `}
                 >
                   <span>GET IN T</span>
                   <button
-                    onClick={scroll_to_contact}
+                    onClick={() => {
+                      setopen_contact_form(true);
+                    }}
                     className=" overflow-hidden flex justify-center items-center  border-white w-[10vw] h-[10vw] md:h-[6vw] md:w-[6vw] border md:mx-[0.1vw] mx-[1vw] relative group cursor-pointer  rounded-[100%]"
                   >
                     <Image
@@ -128,6 +133,9 @@ const Footer = ({ bg }: any) => {
                     whiteSpace: "nowrap",
                     transition: "0.5s ease",
                   }}
+                  onClick={() => {
+                    setopen_contact_form(true);
+                  }}
                   className={` ${Bricolage_grotesk_bold.className} uppercase overflow-hidden w-fit  md:p-[0.5vw]  p-[2vw] rounded-[8vw] group hover:[#103210]  hover:bg-[black] hover:bg-opacity-[20%]  md:rounded-[2vw] bg-[white] backdrop-blur-2xl bg-opacity-[10%] `}
                 >
                   <div className="w-full h-full bg-[#440C0C] group-hover:bg-[#103210] md:rounded-[1.7vw] rounded-[7vw]  flex justify-center items-center py-[2.5vw] px-[8vw] md:py-[0.8vw] md:px-[2vw]">
@@ -137,13 +145,13 @@ const Footer = ({ bg }: any) => {
                   </div>
                 </button>
               </div>
-              <div className="  flex gap-[3vw] md:w-auto w-[70%] flex-wrap  md:flex-col md:gap-[2vw] ">
+              <div className="  flex gap-[3vw] md:w-auto  flex-wrap  md:flex-col md:gap-[2vw] ">
                 {items.map((e: any, index: any) => {
                   return (
                     <Link
                       key={index}
                       href={e.link}
-                      className={`uppercase text-[#ffffffbe] hover:text-white md:text-[1.2vw] text-[3.5vw] ${Helvetica_medium.className}`}
+                      className={`uppercase underline underline-offset-8 hover:text-[#ffffffbe] text-white md:text-[1.1vw] text-[3vw] ${Helvetica_medium.className}`}
                     >
                       {e.text}
                     </Link>
@@ -215,6 +223,10 @@ const Footer = ({ bg }: any) => {
           </div>
         </div>
       </div>
+
+      {open_contact_form && (
+        <Contact_form setopen_contact_form={setopen_contact_form} />
+      )}
     </>
   );
 };

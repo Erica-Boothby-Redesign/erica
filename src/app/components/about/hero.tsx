@@ -81,9 +81,8 @@ const About_hero = ({ user_data }: any) => {
   useEffect(() => {
     gsap.to(image_ref.current, {
       xPercent: calWidth < 768 ? "" : yvalue >= 50 ? -50 : yvalue,
-      duration: 0.5, // Adjust duration as needed
+      duration: 1, // Adjust duration as needed
     });
-    console.log("this is trackign");
     gsap.to(image_ref_one.current, {
       opacity: calWidth < 768 ? "" : opac_one_img,
       duration: 0.2, // Adjust duration as needed
@@ -216,6 +215,7 @@ const About_hero = ({ user_data }: any) => {
           record_Name={record_Name}
           setedit_img={setedit_img}
           btn_text={btn_text}
+          table={"about"}
         />
       )}
       <div className="w-full pt-[30vw]  md:py-[4vw] gap-[7vw] pb-[10vw] flex-col px-[3%] md:px-[7vw]  md:gap-[3vw]  flex">
